@@ -4,7 +4,6 @@
 
 const leftMenu = document.querySelector('.left-menu');
 const hamburger = document.querySelector('.hamburger');
-const tvList = document.querySelector('.tv-shows__list');
 
 hamburger.addEventListener('click', () => {
     leftMenu.classList.toggle('openMenu');
@@ -29,18 +28,17 @@ leftMenu.addEventListener('click', event => {
     }
 });
 
-tvList.addEventListener('mouseover', event => {
-   const target = event.target;
-   const tvCard = target.closest('.tv-card');
-   const tvCardImg = target.closest('.tv-card__img');
-   if (tvCard && tvCardImg) {
-       const origSrc = tvCardImg.src;
-       const newScr = tvCardImg.dataset.backdrop;
-       if (newScr) {
-           tvCardImg.src = newScr;
-           tvCard.addEventListener('mouseout', () => {
-            tvCardImg.src = origSrc;
-           });
-        }
-   }
-});
+function swapAttrs (elem) {
+    let tmp = elem.src
+    elem.setAttribute('src', elem.dataset.backdrop)
+    elem.setAttribute('data-backdrop', tmp)
+}
+
+Array.from(document.querySelectorAll ('.tv-card__img')).map( item => {
+    item.addEventListener('mouseover', event => {
+        swapAttrs(event.target)
+    })
+    item.addEventListener('mouseout', event => {
+        swapAttrs(event.target)
+    })
+})
