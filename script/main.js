@@ -1,6 +1,7 @@
 const IMG_URL = "https://image.tmdb.org/t/p/w185_and_h278_bestv2";
 const API_KEY = "b7e11c9b9ca94287321e3d78cd528523";
 const SERVER = "https://api.themoviedb.org/3";
+
 const leftMenu = document.querySelector('.left-menu');
 const hamburger = document.querySelector('.hamburger');
 const tvShowsList = document.querySelector('.tv-shows__list')
@@ -77,7 +78,8 @@ const renderCard = (response, target) => {
         const voteElem = vote ? `<span class="tv-card__vote">${vote}</span>`: '';
         const card = document.createElement ('li');
         card.classList.add('tv-shows__item');
-        card.innerHTML = ` <a href="#" data-id=${id} class="tv-card">   ${voteElem}
+        card.innerHTML =`
+        <a href="#" data-id=${id} class="tv-card"> ${voteElem}
         <img class="tv-card__img" src="${posterIMG}"
             data-backdrop="${backdropIMG}" alt="${title}">
         <h4 class="tv-card__head">${title}</h4></a>`;
@@ -102,7 +104,7 @@ searchForm.addEventListener ('submit', event => {
     const value = searchFormInput.value.trim();
     if (value) {
         tvShows.append(loading);
-        DBService().getSearchResult(value).then(renderCard);
+        dbService.getSearchResult(value).then(renderCard);
     }
     searchFormInput.value = '';
 })
@@ -138,22 +140,22 @@ leftMenu.addEventListener('click', event => {
     }
     if (target.closest('#top-rated')) {
         tvShows.append(loading);
-        dbService.getTopRated ().then(responce => renderCard(responce, target));
+        dbService.getTopRated ().then(response => renderCard(response, target));
 
     }
     if (target.closest('#popular')) {
         tvShows.append(loading);
-        dbService.getPopular ().then(responce => renderCard(responce, target));
+        dbService.getPopular ().then(response => renderCard(response, target));
 
     }
     if (target.closest('#today')) {
         tvShows.append(loading);
-        dbService.getToday ().then(responce => renderCard(responce, target));
+        dbService.getToday ().then(response => renderCard(response, target));
 
     }
     if (target.closest('#week')) {
         tvShows.append(loading);
-        dbService.getWeek ().then(responce => renderCard(responce, target));
+        dbService.getWeek ().then(response => renderCard(response, target));
 
     }
     if (target.closest('#search')) {
@@ -180,7 +182,7 @@ tvShowsList.addEventListener('click', event => {
     const card = target.closest('.tv-card')
     if (card) {
         tvShows.append(loading);
-        DBService().getTvShow(card.dataset.id)
+        dbService.getTvShow(card.dataset.id)
             .then(response => {
 
                 if (response.poster_path) {
